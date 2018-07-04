@@ -7,12 +7,16 @@ function removeFromArray(arr, elt) {
 }
 
 function heuristic(a, b) {
-  // Euclidean distance, pythagoras theorem
-  //var d = dist(a.i, a.j, b.i, b.j);
+  /** 
+   * Euclidean distance, pythagoras theorem
+   */
+  var d = dist(a.i, a.j, b.i, b.j);
 
-  // manhattan distance / taxicab distance : dist diff in x + diff in y
-  var d = abs(a.i-b.i) + abs(a.j - b.j);
-
+  /** 
+   * Manhattan distance / taxicab distance : dist diff in x + diff in y
+   * Not great if you use a diagonal
+   * var d = abs(a.i-b.i) + abs(a.j - b.j);
+   */
   return d;
 }
 
@@ -27,6 +31,7 @@ var start;
 var end;
 var w, h;
 var path = [];
+var wallprob = 0.4; // probability of walls in the image
 
 function Spot(i, j) {
   this.i = i;
@@ -39,7 +44,7 @@ function Spot(i, j) {
   this.wall = false;
 
   // make walls
-  if (random(1) < 0.3) {
+  if (random(1) < wallprob) {
     this.wall = true;
   }
 
@@ -66,6 +71,19 @@ function Spot(i, j) {
     if (j > 0) {
       this.neighbors.push(grid[i][j - 1]);
     }
+    /** add diagonals */
+    if (i > 0 && j > 0) {
+      this.neighbors.push(grid[i - 1][j - 1]);
+    }
+    if (i > 0 && j < rows -1) {
+      this.neighbors.push(grid[i - 1][j + 1]);
+    }
+    if (i < cols - 1 && j > 0) {
+      this.neighbors.push(grid[i + 1][j - 1]);
+    }    
+    if (i < cols - 1 && j < rows - 1) {
+      this.neighbors.push(grid[i + 1][j + 1]);
+    }        
   }
 }
 
@@ -105,11 +123,12 @@ function setup() {
 
   openSet.push(start);
 
-  console.table(grid);
 }
 
 function draw() {
-
+  /** 
+   * The loop in which we check for each step
+   */
   if (openSet.length > 0) {
 
     var winner = 0;
@@ -120,6 +139,9 @@ function draw() {
     }
     var current = openSet[winner];
 
+    /** 
+     * Maze solved
+     */
     if (current === end) {
       noLoop();
       console.log('Done.');
@@ -135,18 +157,22 @@ function draw() {
       if (!closedSet.includes(neighbor) && !neighbor.wall) {
         var tempG = current.g + 1;
 
+        var newPath = false;
         if (openSet.includes(neighbor)) {
           if (tempG < neighbor.g) {
             neighbor.g = tempG;
+            newPath = true;
           }
         } else {
           neighbor.g = tempG;
+          newPath = true;
           openSet.push(neighbor);
         }
-
-        neighbor.h = heuristic(neighbor, end);
-        neighbor.f = neighbor.g + neighbor.h;
-        neighbor.previous = current;
+        if(newPath){ 
+          neighbor.h = heuristic(neighbor, end);
+          neighbor.f = neighbor.g + neighbor.h;
+          neighbor.previous = current;
+        }
       }
     }
 
