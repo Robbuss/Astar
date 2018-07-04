@@ -17,8 +17,8 @@ function heuristic(a, b) {
 }
 
 
-var cols = 25;
-var rows = 25;
+var cols = 50;
+var rows = 50;
 var grid = new Array(cols);
 
 var openSet = [];
@@ -36,9 +36,18 @@ function Spot(i, j) {
   this.h = 0;
   this.neighbors = [];
   this.previous = undefined;
+  this.wall = false;
+
+  // make walls
+  if (random(1) < 0.3) {
+    this.wall = true;
+  }
 
   this.show = function (color) {
     fill(color);
+    if( this.wall){
+      fill(0);
+    }
     rect(this.i * w, this.j * h, w - 1, h - 1);
   }
 
@@ -61,7 +70,7 @@ function Spot(i, j) {
 }
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(600, 600);
   console.log('A* ');
 
   w = width / cols;
@@ -84,9 +93,15 @@ function setup() {
     }
   }
 
-
+  /** 
+   * Define start and end spot
+   * Make sure they aren't a wall
+   * 
+   */
   start = grid[0][0];
   end = grid[cols - 1][rows - 1];
+  start.wall = false;
+  end.wall = false;
 
   openSet.push(start);
 
@@ -117,7 +132,7 @@ function draw() {
     for (var i = 0; i < neighbors.length; i++) {
       var neighbor = neighbors[i];
 
-      if (!closedSet.includes(neighbor)) {
+      if (!closedSet.includes(neighbor) && !neighbor.wall) {
         var tempG = current.g + 1;
 
         if (openSet.includes(neighbor)) {
@@ -136,7 +151,9 @@ function draw() {
     }
 
   } else {
-    // no solution
+    console.log('No Path possible');
+    noLoop();
+    return;
   }
 
   background(0);
@@ -159,13 +176,13 @@ function draw() {
   }
 
   // evaluate the current path
-  path = [];
-  var temp = current;
-  path.push(temp);
-  while (temp.previous) {
-    path.push(temp.previous);
-    temp = temp.previous;
-  }
+    path = [];
+    var temp = current;
+    path.push(temp);
+    while (temp.previous) {
+      path.push(temp.previous);
+      temp = temp.previous;
+    }
 
   // the current path 
   for (var i = 0; i < path.length; i++) {
