@@ -16,24 +16,22 @@ var consoleWindow;
 var consoleOutput;
 var reset;
 
-
 function setup() {
-  
+
   var resetButton = select('.reset');
   resetButton.mousePressed(reset);
   reset();
 }
 
-function reset()
-{
+function reset() {
   openSet = [];
   closedSet = [];
   path = [];
+
   consoleOutput = [];
+
   var canvas = createCanvas(600, 600);
   canvas.parent('#canvas');
-  
-  consoleOutput.push('Starting A* Search algo');
 
   w = width / cols;
   h = height / rows;
@@ -58,7 +56,9 @@ function reset()
   initialize();
 
 }
-function initialize(){
+function initialize() {
+  consoleOutput.push('Starting A* Search algo<br> Searching...');
+  drawOutput(consoleOutput);
   /** 
    * Define start and end spot
    * Make sure they aren't a wall
@@ -73,15 +73,12 @@ function initialize(){
   loop();
 }
 
-
 function draw() {
-  var consoleWindow = select('#console');
-  consoleWindow.html(consoleOutput);
+
   /** 
    * The loop in which we check for each step
    */
   if (openSet.length > 0) {
-
     var winner = 0;
     for (var i = 0; i < openSet.length; i++) {
       if (openSet[i].f < openSet[winner].f) {
@@ -94,13 +91,15 @@ function draw() {
      * Maze solved
      */
     if (current === end) {
-        noLoop();
-        end.show(color(200, 60, 255));
-        consoleOutput.push('<br>');
-        consoleOutput.push('Done.');
-        consoleOutput.push('<br>');
-        consoleOutput.push('Press reset to run again.');
-        return;
+      noLoop();
+      end.show(color(200, 60, 255));
+
+      consoleOutput.push('<br>Done.');
+      consoleOutput.push('<br>Optimal path found in ' + path.length + ' steps');
+      consoleOutput.push('<br>Press reset to run again.');
+      drawOutput(consoleOutput);
+
+      return;
     }
 
     removeFromArray(openSet, current);
@@ -124,7 +123,7 @@ function draw() {
           newPath = true;
           openSet.push(neighbor);
         }
-        if(newPath){ 
+        if (newPath) {
           neighbor.h = heuristic(neighbor, end);
           neighbor.f = neighbor.g + neighbor.h;
           neighbor.previous = current;
@@ -133,10 +132,14 @@ function draw() {
     }
 
   } else {
-    console.log('No Path possible');
+    consoleOutput.push('<br>No Path possible.');
+    drawOutput(consoleOutput);
+
     noLoop();
     return;
   }
+
+
 
   // function to show the spots
   for (var i = 0; i < cols; i++) {
@@ -156,16 +159,17 @@ function draw() {
   }
 
   // evaluate the current path
-    path = [];
-    var temp = current;
-    path.push(temp);
-    while (temp.previous) {
-      path.push(temp.previous);
-      temp = temp.previous;
-    }
+  path = [];
+  var temp = current;
+  path.push(temp);
+  while (temp.previous) {
+    path.push(temp.previous);
+    temp = temp.previous;
+  }
 
   // the current path 
   for (var i = 0; i < path.length; i++) {
     path[i].show(color(0, 0, 255));
   }
+
 }

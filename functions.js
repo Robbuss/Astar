@@ -19,3 +19,12 @@ function heuristic(a, b) {
      */
     return d;
 }
+
+function drawOutput(consoleOutput){
+    var consoleWindow = select('#console');
+    let outputString = '';
+    for (let i = 0; i < consoleOutput.length; i++) {
+        outputString += consoleOutput[i];
+    }
+    consoleWindow.html(outputString);
+}
