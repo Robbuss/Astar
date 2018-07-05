@@ -1,6 +1,28 @@
+#canvas{
+}
 #console-wrapper{
     background-color:#fefefe;
     width:600px;
     height:250px;
     border:1px solid #333;
+    box-shadow: 0 0 30px rgba(0,0,0,0.4);
+
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: #141414;
+  color: #45D40C;
+  font: 0.8em 'Andale Mono', Consolas, 'Courier New';
+  line-height: 1.6em;
+
+  -webkit-border-bottom-right-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+#console{
+  margin: 0;
+  padding: 5px;
 }
