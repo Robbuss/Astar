@@ -1,9 +1,13 @@
-#canvas{
+html{
+  margin-top:25px;
+}
+.controls{
+  float:left;
 }
 #console-wrapper{
     background-color:#fefefe;
     width:600px;
-    height:250px;
+    height:175px;
     border:1px solid #333;
     box-shadow: 0 0 30px rgba(0,0,0,0.4);
 

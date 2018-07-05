@@ -20,6 +20,7 @@ function setup() {
 
   var resetButton = select('.reset');
   resetButton.mousePressed(reset);
+
   reset();
 }
 

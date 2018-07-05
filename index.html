@@ -14,15 +14,31 @@
     <script src="Spot.js"></script>
   </head>
   <body>
-
-    <div class="container">      
-      <div id="canvas"></div>
-      <div id="console-wrapper">
-        <div id="console">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7">
+          <div id="canvas"></div>
+          <div id="console-wrapper">
+            <div id="console"></div>
+          </div>
         </div>
-      </div>
-      <button class="btn reset">Reset</button>
+        <div class="col-md-5 controls">
+          <h4>Controls</h4>
+          <div class="form-group">
+            <label for="heuristic">Heuristic</label>
+            <select multiple class="form-control" id="heuristic">
+              <option>Manhattan</option>
+              <option>Euclydian</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="wall">Example Range input</label>
+            <input type="range" min=0 max=100 value=30 class="form-control-range" id="wall">
+          </div>  
+          <button class="btn run">Run</button>
+          <button class="btn reset">Reset</button>
+        </div>     
+      </div>  
     </div>
-
   </body>
 </html>
