@@ -142,8 +142,6 @@ function draw() {
     return;
   }
 
-
-
   // function to show the spots
   for (var i = 0; i < cols; i++) {
     for (var j = 0; j < rows; j++) {
