@@ -8,7 +8,7 @@ var start;
 var end;
 var w, h;
 var path = [];
-var wallprob = 0.4; // probability of walls in the image
+var wallprob = 0.5; // probability of walls in the image
 
 /** Dom init */
 var canvas;
@@ -19,8 +19,7 @@ var reset;
 function setup() {
 
   var resetButton = select('.reset');
-  resetButton.mousePressed(reset);
-
+  resetButton.mousePressed(reset); 
   reset();
 }
 
@@ -33,6 +32,9 @@ function reset() {
 
   var canvas = createCanvas(600, 600);
   canvas.parent('#canvas');
+  wallprob = select('.slider').value() / 100
+  consoleOutput.push('Drawing with a ' + wallprob + ' probability<br>');
+  drawOutput(consoleOutput);
 
   w = width / cols;
   h = height / rows;
@@ -44,7 +46,7 @@ function reset() {
 
   for (var i = 0; i < cols; i++) {
     for (var j = 0; j < cols; j++) {
-      grid[i][j] = new Spot(i, j);
+      grid[i][j] = new Spot(i, j, 1);
     }
   }
 
